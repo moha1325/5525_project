@@ -10,10 +10,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 # train and test on our feature set generated using librosa
-data = pd.read_csv('datasets/gtzan_all_combined/processed_features.csv')
-X = data.drop(columns=['genre', 'file_name'])
-y = data['genre']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# data = pd.read_csv('datasets/gtzan_all_combined/processed_features.csv')
+# X = data.drop(columns=['genre', 'file_name'])
+# y = data['genre']
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # train and test on 30 second feature set that came with gtzan
 # data = pd.read_csv('datasets/gtzan/features_30_sec.csv')
@@ -39,9 +39,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 #     y_test = y30.iloc[test_idx30]
 
 # standardize the features
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+
 
 # all have the same flow 
 # initialize model -> train -> test -> get accuracy
@@ -69,7 +67,7 @@ def random_forest(X_train, y_train, X_test, y_test):
     print("accuracy:", accuracy_score(y_test, y_pred))
 
 if __name__ == "__main__":
-    # can try and loop through for more testing
+    # can try and loop through for testing
     paths = [
         'datasets/gtzan_processed_30s/processed_features.csv', 
         'datasets/gtzan_processed_15s/processed_features.csv', 
@@ -79,12 +77,26 @@ if __name__ == "__main__":
         'datasets/gtzan_all_combined/processed_features.csv'
     ]
 
+    types = ['30', '15', '10', '5', '3', 'All Combined']
 
-    print("knn results")
-    knn(X_train, y_train, X_test, y_test)
+    for i in range(len(paths)):
+        print(f"Results for {paths[i].split('/')[1]}")
+        data = pd.read_csv(paths[i])
+        X = data.drop(columns=['genre', 'file_name'])
+        y = data['genre']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        scaler = StandardScaler()
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
 
-    print("\nsvm results")
-    svm(X_train, y_train, X_test, y_test)
 
-    print("\nrandom forest results")
-    random_forest(X_train, y_train, X_test, y_test)
+        print("knn results")
+        knn(X_train, y_train, X_test, y_test)
+
+        print("\nsvm results")
+        svm(X_train, y_train, X_test, y_test)
+
+        print("\nrandom forest results")
+        random_forest(X_train, y_train, X_test, y_test)
+
+        print()
