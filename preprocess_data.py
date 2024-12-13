@@ -114,7 +114,7 @@ features_list = []
 count = 0
 
 # the amount of seconds each sample will be 
-# will be doing 30 seconds(full file) along with 15, 10, 5, 3, 2
+# will be doing 30 seconds(full file) along with 15, 10, 5, 3
 splits_seconds = [30, 15, 10, 5, 3]
 
 # we skip jazz 54 since that is known to be corrupted
