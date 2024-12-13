@@ -1,4 +1,4 @@
-Results found on 12/12/2024.
+Results found on 12/12/2024 and 12/13/2024.
 
 Found by training/testing on the same dataset
 For example training on 80% of the 30 second dataset and testing with the remaining 20%
