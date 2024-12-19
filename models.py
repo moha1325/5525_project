@@ -38,9 +38,6 @@ from sklearn.metrics import accuracy_score
 #     X_test = X30.iloc[test_idx30]
 #     y_test = y30.iloc[test_idx30]
 
-# standardize the features
-
-
 # all have the same flow 
 # initialize model -> train -> test -> get accuracy
 
@@ -73,22 +70,36 @@ if __name__ == "__main__":
         'datasets/gtzan_processed_15s/processed_features.csv', 
         'datasets/gtzan_processed_10s/processed_features.csv', 
         'datasets/gtzan_processed_5s/processed_features.csv', 
-        'datasets/gtzan_processed_3s/processed_features.csv', 
-        'datasets/gtzan_all_combined/processed_features.csv'
+        'datasets/gtzan_processed_3s/processed_features.csv',
+        'datasets/gtzan_processed_2s/processed_features.csv',
+        'datasets/gtzan_processed_1s/processed_features.csv'
     ]
+    types = [30, 15, 10, 5, 3, 2, 1]
 
-    types = ['30', '15', '10', '5', '3', 'All Combined']
+    data_30s = pd.read_csv('datasets/gtzan_processed_30s/processed_features.csv')
+    X_30s = data_30s.drop(columns=['genre', 'file_name']).to_numpy()
+    y_30s = data_30s['genre'].to_numpy()
+    idx = np.arange(999)
+    _, X_test, _, y_test, idx_train, _ = train_test_split(X_30s, y_30s, idx, test_size=0.2, random_state=42)
+    scaler = StandardScaler()
+    scaler.fit(X_test)
+    X_test = scaler.transform(X_test)
 
     for i in range(len(paths)):
         print(f"Results for {paths[i].split('/')[1]}")
         data = pd.read_csv(paths[i])
-        X = data.drop(columns=['genre', 'file_name'])
-        y = data['genre']
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X = data.drop(columns=['genre', 'file_name']).to_numpy()
+        y = data['genre'].to_numpy()
+        n = int(30 / types[i])
+        base_indices = n * idx_train
+        train_indices = base_indices
+        for j in range(1, n):
+            train_indices = np.append(train_indices, base_indices + j)
+        X_train = X[train_indices, :]
+        y_train = y[train_indices]
         scaler = StandardScaler()
-        X_train = scaler.fit_transform(X_train)
-        X_test = scaler.transform(X_test)
-
+        scaler.fit(X_train)
+        X_train = scaler.transform(X_train)
 
         print("knn results")
         knn(X_train, y_train, X_test, y_test)
