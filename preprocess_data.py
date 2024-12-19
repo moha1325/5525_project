@@ -73,6 +73,22 @@ def extract_features(audio_path, file_name, seconds=30):
         spectral_contrast_var = np.var(spectral_contrast, axis=1)
         spectral_flatness_mean = np.mean(spectral_flatness)
         spectral_flatness_var = np.var(spectral_flatness)
+
+        # features not in gtzan and not in librosa standard set
+        # extracting features from short-time Fourier transform
+        row_norms = np.linalg.norm(D, axis = 1)
+        sorted_norms = np.argsort(row_norms)[::-1]
+        highest_10_frequency_avg = np.mean(sorted_norms[:10])
+        highest_20_frequency_avg = np.mean(sorted_norms[:20])
+        highest_50_frequency_avg = np.mean(sorted_norms[:50])
+        highest_100_frequency_avg = np.mean(sorted_norms[:100])
+        highest_200_frequency_avg = np.mean(sorted_norms[:200])
+
+        highest_10_frequency_var = np.var(sorted_norms[:10])
+        highest_20_frequency_var = np.var(sorted_norms[:20])
+        highest_50_frequency_var = np.var(sorted_norms[:50])
+        highest_100_frequency_var = np.var(sorted_norms[:100])
+        highest_200_frequency_var = np.var(sorted_norms[:200])
         
         feature = {
             "file_name": file_name,
