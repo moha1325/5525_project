@@ -1,0 +1,33 @@
+Updated results as of 12/18/2024
+The training is done on different datasets, the testing is always done on the 30s dataset.
+We ensure that each song is either contained entirely in the training set or entirely in the test set.
+
+Model: KNN
+(Seconds per sample) (Accuracy) 
+30 0.69
+15 0.72
+10 0.755
+5 0.77
+3 0.75
+2 0.755
+1 0.715
+
+Model: SVM
+(Seconds per sample) (Accuracy) 
+30 0.8
+15 0.775
+10 0.785
+5 0.8
+3 0.81
+2 0.81
+1 0.815
+
+Model: RF
+(Seconds per sample) (Accuracy) 
+30 0.72
+15 0.725
+10 0.75
+5 0.77
+3 0.78
+2 0.8
+1 0.775
