@@ -35,7 +35,10 @@ def extract_features(audio_path, file_name, seconds=30):
         zero_crossing_rate = librosa.feature.zero_crossing_rate(y=y)
         y_harmonic, y_percussive = librosa.effects.hpss(y)
         tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
-        tempo = tempo[0]
+        try:
+            tempo = tempo[0]
+        except TypeError:
+            pass
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20)
 
         chroma_stft_mean = np.mean(chroma)
@@ -114,8 +117,8 @@ features_list = []
 count = 0
 
 # the amount of seconds each sample will be 
-# will be doing 30 seconds(full file) along with 15, 10, 5, 3
-splits_seconds = [30, 15, 10, 5, 3]
+# will be doing 30 seconds(full file) along with 15, 10, 5, 3, 2, 1
+splits_seconds = [2, 1]
 
 # we skip jazz 54 since that is known to be corrupted
 for s in splits_seconds:
