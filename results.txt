@@ -1,4 +1,4 @@
-Updated results as of 12/18/2024
+Results obtained on 12/18/2024
 The training is done on different datasets, the testing is always done on the 30s dataset.
 We ensure that each song is either contained entirely in the training set or entirely in the test set.
 
